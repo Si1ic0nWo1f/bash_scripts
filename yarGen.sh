@@ -64,7 +64,7 @@ fi
 
 echo -e "\e[1;92mThe YARA rule was successfully generated"
 echo ""
-echo -n "Do you want to view the rule? (y/n) \e[0m"
+echo -ne "Do you want to view the rule? (y/n) \e[0m"
 read view
 if echo "$view" | grep -iq "^y"
 then
