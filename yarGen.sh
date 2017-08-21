@@ -34,7 +34,6 @@ clear
 echo -e "\e[1;92m-----------------------------------------------"
 echo -e "\e[0myarGen - YARA rule creation Script"
 echo ""
-echo "Created by 591SU Cyber Threat Intelligence Cell"
 echo "Powered by https://github.com/Neo23x0/yarGen"
 echo -e "\e[1;92m-----------------------------------------------"
 echo ""
