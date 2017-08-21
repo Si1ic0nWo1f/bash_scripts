@@ -11,7 +11,7 @@ fi
 
 if [ ! -d $GIT/yarGen ]
 then
-        cd $GIT && git clone https://github.com/Neo23x0/yarGen && pip install scandir && pip install lxml && pip install && pip install naiveBayesClassifier && pip install pefile
+        cd $GIT && git clone https://github.com/Neo23x0/yarGen && pip install scandir && pip install lxml && pip install naiveBayesClassifier && pip install pefile
 fi
 
 if [ ! -d $SAMPLES ]
