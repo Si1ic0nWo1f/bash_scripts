@@ -23,8 +23,6 @@ fi
 if [ $1 = "-s" ]
 then
 	SAMPLES=$2
-	echo $SAMPLES
-	exit
 fi
 
 
