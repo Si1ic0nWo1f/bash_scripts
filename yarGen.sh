@@ -13,12 +13,14 @@ then
 	echo ""
 	echo "-h: display this help file"
 	echo "-s <path to alternate samples folder>: Change the default samples location [Default: ~/Desktop/YARA_Samples]"
+	echo "-u: Update string database and dependencies"
 	echo "-v: Verbose - Display all output"
 	echo "-sv <path to alternate samples folder>: Change the default samples location and display all output" 
 	echo ""
 	echo "EXAMPLES:"
 	echo "  ./yarGen.sh -s /home/user/Desktop/samples"
 	echo "  ./yarGen.sh -h"
+	echo "  ./yarGen.sh -u"
 	echo "  ./yarGen.sh -v"
 	echo "  ./yarGen.sh -sv /home/user/Desktop/samples"
 	exit
@@ -30,6 +32,20 @@ clear
 if [[ ${1} = "-s" ]]
 then
 	SAMPLES=${2}
+fi
+
+# Update strings database and dependencies
+if [[ ${1} = "-u" ]]
+then
+	apt-get update
+	apt-get upgrade yara -y
+	apt-get upgrade python2.7 -y
+	pip install scandir --upgrade
+        pip install lxml --upgrade
+        pip install naiveBayesClassifier --upgrade
+        pip install pefile --upgrade
+	python ${GIT}/yarGen/yarGen.py --update
+	exit
 fi
 
 # Verbose - Display all output
@@ -65,6 +81,7 @@ then
 	pip install naiveBayesClassifier
 	pip install pefile
 	apt-get install yara -y
+	apt-get install python2.7 -y
 fi
 
 # If samples folder doesn't exist then create
