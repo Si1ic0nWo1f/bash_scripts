@@ -6,8 +6,10 @@ RULE=yarGen_Rule.yar
 GIT=~/git
 VERBOSE=0
 
+clear
+
 # Display help and usage information
-if [ $1 = "-h" ]
+if [[ $1 = "-h" ]]
 then
         echo "usage: ./yarGen.sh [-h] [-s]"
 	echo ""
@@ -22,26 +24,28 @@ then
 fi
 
 # Change default samples directory
-if [ $1 = "-s" ]
+if [[ $1 = "-s" ]]
 then
 	SAMPLES=$2
 fi
 
 # Verbose - Display all output
-if [ $1 = "-v" ]
+if [[ $1 = "-v" ]]
 then
 	VERBOSE=1
+	echo "Verbose mode"
+	echo ""
 fi
 
 
 # If git folder doesn't exist then create
-if [ ! -d $GIT ]
+if [[ ! -d $GIT ]]
 then
         mkdir $GIT
 fi
 
 # If yarGen folder doesn't exist then clone github repostitory and install dependencies
-if [ ! -d $GIT/yarGen ]
+if [[ ! -d $GIT/yarGen ]]
 then
         cd $GIT
 	git clone https://github.com/Neo23x0/yarGen
@@ -53,25 +57,25 @@ then
 fi
 
 # If samples folder doesn't exist then create
-if [ ! -d $SAMPLES ]
+if [[ ! -d $SAMPLES ]]
 then
         mkdir $SAMPLES
 fi
 
 # If database directory doesn't exist then generate
-if [ ! -d $GIT/yarGen/dbs ]
+if [[ ! -d $GIT/yarGen/dbs ]]
 then
         cd $GIT/yarGen
 	python $GIT/yarGen/yarGen.py --update
 fi
 
 # If previous YARA rule file exists then delete
-if [ -e $SAMPLES/$RULE ]
+if [[ -e $SAMPLES/$RULE ]]
 then
 	rm $SAMPLES/$RULE
 fi
 
-if [ VERBOSE="0" ]
+if [[ ! $VERBOSE=1 ]]
 then
 	clear
 fi
@@ -108,14 +112,14 @@ echo "This may take several minutes..."
 
 # Main Python script with STDOUT redirected to /dev/null unless VERBOSE = 1
 
-if [ VERBOSE="0" ]
+if [[ ! $VERBOSE=1 ]]
 then
 	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE > /dev/null
 else
 	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE	
 fi
 
-if [ VERBOSE="0" ]
+if [[ ! $VERBOSE=1 ]]
 then
 	clear
 fi
@@ -137,7 +141,7 @@ echo ""
 echo -ne "Do you want to view the rule? (y/n) \e[0m"
 read view
 
-if [ VERBOSE="0" ]
+if [[ ! $VERBOSE=1 ]]
 then
 	clear
 fi
@@ -153,7 +157,7 @@ echo ""
 echo -ne "\e[1;92mDo you want to test the rule? (y/n) \e[0m"
 read TEST
 
-if [ VERBOSE="0" ]
+if [[ ! $VERBOSE=1 ]]
 then
 	clear
 fi
