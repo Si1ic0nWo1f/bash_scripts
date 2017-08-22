@@ -4,6 +4,7 @@
 SAMPLES=~/Desktop/YARA_Samples
 RULE=yarGen_Rule.yar
 GIT=~/git
+VERBOSE=0
 
 # Display help and usage information
 if [ $1 = "-h" ]
@@ -12,6 +13,7 @@ then
 	echo ""
 	echo "-h: display this help file"
 	echo "-s <path to alternate samples folder>: Change the default samples location"
+	echo "-v: Verbose - Display all output"
 	echo ""
 	echo "EXAMPLES:"
 	echo "  ./yarGen.sh -s /home/user/Desktop/samples"
@@ -23,6 +25,12 @@ fi
 if [ $1 = "-s" ]
 then
 	SAMPLES=$2
+fi
+
+# Verbose - Display all output
+if [ $1 = "-v" ]
+then
+	VERBOSE=1
 fi
 
 
@@ -63,7 +71,10 @@ then
 	rm $SAMPLES/$RULE
 fi
 
-clear
+if [ VERBOSE="0" ]
+then
+	clear
+fi
 
 # Main title
 echo -e "\e[1;92m-----------------------------------------------"
@@ -95,10 +106,20 @@ echo ""
 echo "Generating YARA rule..."
 echo "This may take several minutes..."
 
-# Main Python script with STDOUT redirected to /dev/null
-python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE > /dev/null
+# Main Python script with STDOUT redirected to /dev/null unless VERBOSE = 1
 
-clear
+if [ VERBOSE="0" ]
+then
+	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE > /dev/null
+else
+	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE	
+fi
+
+if [ VERBOSE="0" ]
+then
+	clear
+fi
+
 echo ""
 # If YARA rule file doesn't exist then display error message and exit
 if [ ! -e $SAMPLES/$RULE ]
@@ -116,10 +137,14 @@ echo ""
 echo -ne "Do you want to view the rule? (y/n) \e[0m"
 read view
 
+if [ VERBOSE="0" ]
+then
+	clear
+fi
+
 # If yes then display rule
 if echo "$view" | grep -iq "^y"
 then
-	clear
 	cat $SAMPLES/$RULE
 fi
 
@@ -128,9 +153,13 @@ echo ""
 echo -ne "\e[1;92mDo you want to test the rule? (y/n) \e[0m"
 read TEST
 
+if [ VERBOSE="0" ]
+then
+	clear
+fi
+
 # If yes then test rule
 if echo "$TEST" | grep -iq "^y"
 then
-        clear
 	yara $SAMPLES/$RULE $SAMPLES -r
 fi
