@@ -6,48 +6,59 @@ RULE=yarGen_Rule.yar
 GIT=~/git
 VERBOSE=0
 
-clear
-
 # Display help and usage information
-if [[ $1 = "-h" ]]
+if [[ ${1} = "-h" ]]
 then
-        echo "usage: ./yarGen.sh [-h] [-s]"
+        echo "usage: ./yarGen.sh [-h] [-s] [-v] [-sv]"
 	echo ""
 	echo "-h: display this help file"
-	echo "-s <path to alternate samples folder>: Change the default samples location"
+	echo "-s <path to alternate samples folder>: Change the default samples location [Default: ~/Desktop/YARA_Samples]"
 	echo "-v: Verbose - Display all output"
+	echo "-sv <path to alternate samples folder>: Change the default samples location and display all output" 
 	echo ""
 	echo "EXAMPLES:"
 	echo "  ./yarGen.sh -s /home/user/Desktop/samples"
 	echo "  ./yarGen.sh -h"
+	echo "  ./yarGen.sh -v"
+	echo "  ./yarGen.sh -sv /home/user/Desktop/samples"
 	exit
 fi
 
+clear
+
 # Change default samples directory
-if [[ $1 = "-s" ]]
+if [[ ${1} = "-s" ]]
 then
-	SAMPLES=$2
+	SAMPLES=${2}
 fi
 
 # Verbose - Display all output
-if [[ $1 = "-v" ]]
+if [[ ${1} = "-v" ]]
 then
 	VERBOSE=1
 	echo "Verbose mode"
 	echo ""
 fi
 
+# Change default samples directory and display all output
+if [[ ${1} = "-sv" ]]
+then
+        SAMPLES=${2}
+	VERBOSE=1
+        echo "Verbose mode"
+        echo ""
+fi
 
 # If git folder doesn't exist then create
-if [[ ! -d $GIT ]]
+if [[ ! -d ${GIT} ]]
 then
-        mkdir $GIT
+        mkdir ${GIT}
 fi
 
 # If yarGen folder doesn't exist then clone github repostitory and install dependencies
-if [[ ! -d $GIT/yarGen ]]
+if [[ ! -d ${GIT}/yarGen ]]
 then
-        cd $GIT
+        cd ${GIT}
 	git clone https://github.com/Neo23x0/yarGen
 	pip install scandir
 	pip install lxml
@@ -57,25 +68,25 @@ then
 fi
 
 # If samples folder doesn't exist then create
-if [[ ! -d $SAMPLES ]]
+if [[ ! -d ${SAMPLES} ]]
 then
-        mkdir $SAMPLES
+        mkdir ${SAMPLES}
 fi
 
 # If database directory doesn't exist then generate
-if [[ ! -d $GIT/yarGen/dbs ]]
+if [[ ! -d ${GIT}/yarGen/dbs ]]
 then
-        cd $GIT/yarGen
-	python $GIT/yarGen/yarGen.py --update
+        cd ${GIT}/yarGen
+	python ${GIT}/yarGen/yarGen.py --update
 fi
 
 # If previous YARA rule file exists then delete
-if [[ -e $SAMPLES/$RULE ]]
+if [[ -e ${SAMPLES}/${RULE} ]]
 then
-	rm $SAMPLES/$RULE
+	rm ${SAMPLES}/${RULE}
 fi
 
-if [[ ! $VERBOSE=1 ]]
+if [[ ${VERBOSE} != 1 ]]
 then
 	clear
 fi
@@ -89,7 +100,7 @@ echo -e "\e[1;92m-----------------------------------------------"
 echo ""
 
 # Pause to allow files to be copied into the sample folder
-echo -e "\e[1;92mCopy Malware binaries to ~/Desktop/YARA_Samples "
+echo -e "\e[1;92mCopy Malware binaries to $SAMPLES"
 read -p "Press [Enter] key to Continue..."
 echo ""
 
@@ -112,23 +123,24 @@ echo "This may take several minutes..."
 
 # Main Python script with STDOUT redirected to /dev/null unless VERBOSE = 1
 
-if [[ ! $VERBOSE=1 ]]
+if [[ ${VERBOSE} != 1 ]]
 then
-	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE > /dev/null
+	python ${GIT}/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m ${SAMPLES} -o ${SAMPLES}/${RULE} > /dev/null
 else
-	python $GIT/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m $SAMPLES -o $SAMPLES/$RULE	
+	python ${GIT}/yarGen/yarGen.py -p "PREFIX HERE" -a "$author" -r "REFERENCE HERE" -m ${SAMPLES} -o ${SAMPLES}/${RULE}
 fi
 
-if [[ ! $VERBOSE=1 ]]
+if [[ ${VERBOSE} != 1 ]]
 then
 	clear
 fi
 
 echo ""
 # If YARA rule file doesn't exist then display error message and exit
-if [ ! -e $SAMPLES/$RULE ]
+if [ ! -e ${SAMPLES}/${RULE} ]
 then
 	echo -e "\e[1;31mAn error occured. The YARA rule wasn't created"
+	echo "Run again in verbose mode - ./yarGen.sh -v"
 	read -p "Press [Enter] key to Quit..."
 	exit
 fi
@@ -141,7 +153,7 @@ echo ""
 echo -ne "Do you want to view the rule? (y/n) \e[0m"
 read view
 
-if [[ ! $VERBOSE=1 ]]
+if [[ ${VERBOSE} != 1 ]]
 then
 	clear
 fi
@@ -149,7 +161,7 @@ fi
 # If yes then display rule
 if echo "$view" | grep -iq "^y"
 then
-	cat $SAMPLES/$RULE
+	cat ${SAMPLES}/${RULE}
 fi
 
 # Option to test the rule against the files in the sample folder
@@ -157,7 +169,7 @@ echo ""
 echo -ne "\e[1;92mDo you want to test the rule? (y/n) \e[0m"
 read TEST
 
-if [[ ! $VERBOSE=1 ]]
+if [[ ${VERBOSE} != 1 ]]
 then
 	clear
 fi
@@ -165,5 +177,5 @@ fi
 # If yes then test rule
 if echo "$TEST" | grep -iq "^y"
 then
-	yara $SAMPLES/$RULE $SAMPLES -r
+	yara ${SAMPLES}/${RULE} ${SAMPLES} -r
 fi
