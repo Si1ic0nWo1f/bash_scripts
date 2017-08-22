@@ -20,6 +20,7 @@ then
 	pip install lxml
 	pip install naiveBayesClassifier
 	pip install pefile
+	apt-get install yara -y
 fi
 
 # If samples folder doesn't exist then create
