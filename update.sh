@@ -4,3 +4,4 @@ apt-get dist-update -y
 apt-get clean
 apt-get autoclean
 apt-get autoremove -y
+rm -rf ~/.local/share/Trash/files/*
