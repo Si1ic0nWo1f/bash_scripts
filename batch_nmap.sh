@@ -75,7 +75,7 @@ while read i; do
 	cd xml && ls $i-TCPSYN.xml 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .xml`.old-xml' - {} && cd ../..
 
 	## TCP SYN scan
-	nmap -sS -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
+	nmap -sS -sV -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
 
 	cd results/ips
 	mkdir $i 2>/dev/null
