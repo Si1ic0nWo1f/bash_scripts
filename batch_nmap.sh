@@ -23,10 +23,10 @@ echo -e "\e[1;92m--------------------"
 echo ""
 
 ## Check for hosts.txt
-if [ ! -f "hosts.txt" ]
+if [ ! -f $filename ]
 then
-	echo -e "\e[1;31mThe hosts.txt file does not exist"
-	read -p "Press [Enter] key to Quit..."
+	echo -e "\e[1;31mThe $filename file does not exist"
+	read -p "Press [Enter] Key To Quit..."
 exit
 
 fi
