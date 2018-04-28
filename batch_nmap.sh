@@ -2,7 +2,7 @@
 
 :' 
 Place this script in a folder with a file named hosts.txt containing 1 IP address per line.
-If only scanning your local broadcast domain add the one liner from https://github.com/SiliconW01f/bash_scripts/blob/master/local_arp_scan.sh
+If only scanning your local broadcast domain, add the one liner from https://github.com/SiliconW01f/bash_scripts/blob/master/local_arp_scan.sh
 The entire script uses relative file paths so can be located in as many places as required without editing.
 It will track port changes, maintain lists of all open, closed and filtered ports, and keep a record of scans ran in the logs.txt file
 At present the original scan outputs will only be saved once a day and subsequent scans will overwrite the previous one.
