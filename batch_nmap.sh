@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Place this script in a folder with a file named hosts.txt containing 1 IP address per line.
-## If only scanning your local broadcast domain, uncomment line 10
+## If only scanning your local broadcast domain, uncomment line 10 and the hosts file will be created from all active devices
 ## The entire script uses relative file paths so can be located anywhere without editing.
 ## It will track port changes, maintain lists of all open, closed and filtered ports, and keep a record of scans ran in the logs.txt file
 ## At present the original scan outputs will only be saved once a day and subsequent scans will overwrite the previous one.
