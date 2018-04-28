@@ -63,14 +63,17 @@ while read i; do
 
 	## Grep for open ports and create unique list
 	grep open ./scans/$(today)-$i-TCPSYN.nmap >> ./ips/$i/open-$i.out
+	grep open ./scans/$(today)-$i-UDP.nmap >> ./ips/$i/open-$i.out
 	sort ./ips/$i/open-$i.out | uniq > ./ips/$i/open-$i.txt
 
 	## Grep for filtered ports and create unique list
 	grep filtered ./scans/$(today)-$i-TCPSYN.nmap >> ./ips/$i/filtered-$i.out
+	grep filtered ./scans/$(today)-$i-UDP.nmap >> ./ips/$i/filtered-$i.out
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
 	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
