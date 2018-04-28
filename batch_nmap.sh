@@ -75,7 +75,7 @@ while read i; do
 	cd xml && ls $i-TCPSYN.xml 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .xml`.old-xml' - {} && cd ../..
 
 	## TCP SYN scan
-	nmap -sS -sV -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
+	nmap -sS -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
 
 	cd results/ips
 	mkdir $i 2>/dev/null
@@ -84,15 +84,15 @@ while read i; do
 	cd $i && ls *.txt 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .txt`.out' - {} && cd ../..
 
 	## Grep for open ports and create unique list
-	grep open ./scans/$(today)-$i-TCPSYN.nmap >> ./ips/$i/open-$i.out
+	grep open ./scans/$(today)-$i-TCPSYN.nmap | column -t >> ./ips/$i/open-$i.out
 	sort ./ips/$i/open-$i.out | uniq > ./ips/$i/open-$i.txt
 
 	## Grep for filtered ports and create unique list
-	grep filtered ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are filtered" >> ./ips/$i/filtered-$i.out
+	grep filtered ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are filtered" | column -t >> ./ips/$i/filtered-$i.out
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
@@ -115,9 +115,9 @@ rm *.old-xml 2>/dev/null
 cd ../ips
 
 # Create merged lists for all hosts
-grep -rh open >> ../../open_ports.out
-grep -rh filtered >> ../../filtered_ports.out
-grep -rh closed >> ../../closed_ports.out
+grep -rh open | column -t >> ../../open_ports.out
+grep -rh filtered | column -t >> ../../filtered_ports.out
+grep -rh closed | column -t >> ../../closed_ports.out
 
 cd ../..
 sort open_ports.out | uniq > open_ports.txt
@@ -154,16 +154,16 @@ while read i; do
 	cd $i && ls *.txt 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .txt`.out' - {} && cd ../..
 
 	## Grep for open ports and create unique list
-	grep open ./scans/$(today)-$i-UDP.nmap >> ./ips/$i/open-$i.out
+	grep open ./scans/$(today)-$i-UDP.nmap | column -t >> ./ips/$i/open-$i.out
 	sort ./ips/$i/open-$i.out | uniq > ./ips/$i/open-$i.txt
 
 
 	## Grep for filtered ports and create unique list
-	grep filtered ./scans/$(today)-$i-UDP.nmap | grep -v "are filtered" >> ./ips/$i/filtered-$i.out
+	grep filtered ./scans/$(today)-$i-UDP.nmap | grep -v "are filtered" | column -t >> ./ips/$i/filtered-$i.out
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
@@ -186,9 +186,9 @@ rm *.old-xml 2>/dev/null
 cd ../ips
 
 # Create merged lists for all hosts
-grep -rh open >> ../../open_ports.out
-grep -rh filtered >> ../../filtered_ports.out
-grep -rh closed >> ../../closed_ports.out
+grep -rh open | column -t >> ../../open_ports.out
+grep -rh filtered | column -t >> ../../filtered_ports.out
+grep -rh closed | column -t >> ../../closed_ports.out
 
 cd ../..
 sort open_ports.out | uniq > open_ports.txt
@@ -229,18 +229,18 @@ while read i; do
 	cd $i && ls *.txt 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .txt`.out' - {} && cd ../..
 
 	## Grep for open ports and create unique list
-	grep open ./scans/$(today)-$i-TCPSYN.nmap >> ./ips/$i/open-$i.out
-	grep open ./scans/$(today)-$i-UDP.nmap >> ./ips/$i/open-$i.out
+	grep open ./scans/$(today)-$i-TCPSYN.nmap | column -t >> ./ips/$i/open-$i.out
+	grep open ./scans/$(today)-$i-UDP.nmap | column -t >> ./ips/$i/open-$i.out
 	sort ./ips/$i/open-$i.out | uniq > ./ips/$i/open-$i.txt
 
 	## Grep for filtered ports and create unique list
-	grep filtered ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are filtered" >> ./ips/$i/filtered-$i.out
-	grep filtered ./scans/$(today)-$i-UDP.nmap | grep -v "are filtered" >> ./ips/$i/filtered-$i.out
+	grep filtered ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are filtered" | column -t >> ./ips/$i/filtered-$i.out
+	grep filtered ./scans/$(today)-$i-UDP.nmap | grep -v "are filtered" | column -t >> ./ips/$i/filtered-$i.out
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" >> ./ips/$i/closed-$i.out
-	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
@@ -264,9 +264,9 @@ rm *.old-xml 2>/dev/null
 cd ../ips
 
 # Create merged lists for all hosts
-grep -rh open >> ../../open_ports.out
-grep -rh filtered >> ../../filtered_ports.out
-grep -rh closed >> ../../closed_ports.out
+grep -rh open | column -t >> ../../open_ports.out
+grep -rh filtered | column -t >> ../../filtered_ports.out
+grep -rh closed | column -t >> ../../closed_ports.out
 
 cd ../..
 sort open_ports.out | uniq > open_ports.txt
