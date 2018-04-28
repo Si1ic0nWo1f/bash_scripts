@@ -1,13 +1,11 @@
 #!/bin/bash
 
-:' 
-Place this script in a folder with a file named hosts.txt containing 1 IP address per line.
-If only scanning your local broadcast domain, uncomment line 12
-The entire script uses relative file paths so can be located in as many places as required without editing.
-It will track port changes, maintain lists of all open, closed and filtered ports, and keep a record of scans ran in the logs.txt file
-At present the original scan outputs will only be saved once a day and subsequent scans will overwrite the previous one.
-All port information has however already been moved to the open, closed and filtered lists.
-'
+## Place this script in a folder with a file named hosts.txt containing 1 IP address per line.
+## If only scanning your local broadcast domain, uncomment line 10
+## The entire script uses relative file paths so can be located in as many places as required without editing.
+## It will track port changes, maintain lists of all open, closed and filtered ports, and keep a record of scans ran in the logs.txt file
+## At present the original scan outputs will only be saved once a day and subsequent scans will overwrite the previous one.
+## All port information has however already been moved to the open, closed and filtered lists.
 
 ## arp-scan -l | awk '{ print $1 }' | strings -7 | grep -vE 'Starting|Interface:' | sort | uniq | tee hosts.txt
 
@@ -86,7 +84,7 @@ while read i; do
 	cd xml && ls $i-TCPSYN.xml 2>/dev/null| xargs -I {} sh -c 'mv $1 `basename $1 .xml`.old-xml' - {} && cd ../..
 
 	## TCP SYN scan
-	nmap -sS -sV -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
+	nmap -sS -sV-oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
 
 	cd results/ips
 	mkdir $i 2>/dev/null
