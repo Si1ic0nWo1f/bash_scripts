@@ -92,7 +92,7 @@ while read i; do
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -vE 'are closed|closed ports|or closed' | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
@@ -163,7 +163,7 @@ while read i; do
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-UDP.nmap | grep -vE 'are closed|closed ports|or closed' | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
@@ -239,8 +239,8 @@ while read i; do
 	sort ./ips/$i/filtered-$i.out | uniq > ./ips/$i/filtered-$i.txt
 
 	## Grep for closed ports and create unique list
-	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
-	grep closed ./scans/$(today)-$i-UDP.nmap | grep -v "are closed" | grep -v "closed ports" | grep -v "or closed" | column -t >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-TCPSYN.nmap | grep -vE 'are closed|closed ports|or closed' | column -t >> ./ips/$i/closed-$i.out
+	grep closed ./scans/$(today)-$i-UDP.nmap | grep -vE 'are closed|closed ports|or closed' | column -t >> ./ips/$i/closed-$i.out
 	sort ./ips/$i/closed-$i.out | uniq > ./ips/$i/closed-$i.txt
 
 	## Remove temporary .out files
