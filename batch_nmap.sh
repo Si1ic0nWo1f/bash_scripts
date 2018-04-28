@@ -31,8 +31,6 @@ exit
 
 fi
 
-
-
 ## If results folder doesn't exist then create
 if [[ ! -d results ]]
 then
@@ -59,14 +57,14 @@ then
 	mkdir ips
 fi
 
-## Add timestamp to changes log
-echo >> ../log.txt && echo  Scan started at $(datetime) >> ../log.txt
-
 PS3="Please choose an option "
 select option in TCP UDP TCP_and_UDP
 do
 	case $option in
 		TCP)
+
+## Add timestamp to changes log
+echo >> ../log.txt && echo TCP scan started at $(datetime) >> ../log.txt
 
 ## Loop to iterate through hosts.txt
 while read i; do
@@ -136,6 +134,8 @@ find ./ -type f -size 0 -print0 | xargs -0 rm
 
 	UDP)
 
+echo >> ../log.txt && echo UDP scan started at $(datetime) >> ../log.txt
+
 ## Loop to iterate through hosts.txt
 while read i; do
 
@@ -203,6 +203,8 @@ find ./ -type f -size 0 -print0 | xargs -0 rm
 		break;;
 
 	TCP_and_UDP)
+
+echo >> ../log.txt && echo TCP and UDP scan started at $(datetime) >> ../log.txt
 
 ## Loop to iterate through hosts.txt
 while read i; do
