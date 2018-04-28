@@ -53,7 +53,7 @@ while read i; do
 	nmap -sS -sV -oN ./results/scans/$(today)-$i-TCPSYN.nmap -oX ./results/xml/$i-TCPSYN.xml $i
 
 	## UDP scan
- 	## nmap -sS -sV -oN ./results/scans/$(today)-$i-UDP.nmap -oX ./results/xml/$i-UDP.xml $i
+ 	nmap -sU -sV -oN ./results/scans/$(today)-$i-UDP.nmap -oX ./results/xml/$i-UDP.xml $i
 
 	cd results/ips
 	mkdir $i 2>/dev/null
